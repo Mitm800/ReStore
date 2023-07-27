@@ -12,7 +12,7 @@ export const StoreContext = createContext<StoreContextValue | undefined>(undefin
 export function useStoreContext() {
     const context = useContext(StoreContext);
 
-    if (context == undefined) {
+    if (context === undefined) {
         throw Error('You do not seem to be inside the provider');
     }
 
@@ -25,7 +25,7 @@ export function StoreProvider({ children }: PropsWithChildren<any>) {
     function removeItem(productId: number, quantity: number) {
         if (!basket) return;
         const items = [...basket.items];
-        const itemIndex = items.findIndex(i => i.productId == productId);
+        const itemIndex = items.findIndex(i => i.productId === productId);
         if (itemIndex >= 0) {
             items[itemIndex].quantity -= quantity;
             if (items[itemIndex].quantity === 0) items.splice(itemIndex, 1);
