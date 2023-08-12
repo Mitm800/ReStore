@@ -9,7 +9,6 @@ import { useState } from "react";
 import ProductForm from "./ProductForm";
 import { Product } from "../../app/models/product";
 import agent from "../../app/api/agent";
-import { error } from "console";
 import { LoadingButton } from "@mui/lab";
 
 export default function Inventory() {
