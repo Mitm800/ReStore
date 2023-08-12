@@ -1,38 +1,43 @@
-import { Alert, AlertTitle, Button, ButtonGroup, Container, List, ListItem, ListItemText, Typography } from "@mui/material";
-import agent from "../../app/api/agent";
-import { useState } from "react";
+import { Container, Typography, Paper } from '@mui/material';
+import { styled } from '@mui/system';
 
-export default function AboutPage() {
-    const [validationErrors, setValidationErrors] = useState<string []>([]);
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  marginBottom: theme.spacing(4),
+  boxShadow: theme.palette.mode === 'light' ? '0px 4px 6px rgba(0, 0, 0, 0.1)' : '0px 4px 6px rgba(255, 255, 255, 0.1)',
+  background: theme.palette.mode === 'light' ? '#fff' : '#333',
+  borderRadius: '12px',
+  transition: 'transform 0.2s ease-in-out',
+  '&:hover': {
+    transform: 'scale(1.02)',
+  },
+}));
 
-    function getValidationError() {
-        agent.TestErrors.getValidationError()
-        .then(() => console.log('should not see this'))
-        .catch(error => setValidationErrors(error))
-    }
+const AboutPage = () => {
+  return (
+    <Container maxWidth="lg" sx={{ paddingTop: 4, paddingBottom: 8 }}>
+      <Typography variant="h2" gutterBottom align='center'>
+        Discover ReStore
+      </Typography>
+      <StyledPaper>
+        <Typography variant="body1" paragraph fontSize="1.2rem">
+          ReStore is your gateway to a modern and delightful online shopping experience. Our innovative platform brings
+          together cutting-edge technologies and thoughtful design to make your shopping journey seamless and secure.
+        </Typography>
+        <Typography variant="body1" paragraph fontSize="1.2rem">
+          Immerse yourself in a world of products carefully curated to meet your needs. With a powerful frontend built
+          using React and Redux, you can effortlessly explore our catalog, manage your cart, and experience intuitive
+          navigation.
+        </Typography>
+        <Typography variant="body1" paragraph fontSize="1.2rem">
+          Behind the scenes, our backend, crafted with C# .NET MVC, ensures a robust foundation for authentication,
+          product data management, and efficient order processing. APIs seamlessly connect frontend and backend,
+          enhancing your interactions.
+        </Typography>
+        {/* ... other sections ... */}
+      </StyledPaper>
+    </Container>
+  );
+};
 
-    return (
-        <Container>
-            <Typography gutterBottom variant="h2">Errors for testing purposes</Typography>
-            <ButtonGroup fullWidth>
-                <Button variant="contained" onClick={() => agent.TestErrors.get400Error().catch(error => console.log((error)))}>Test 400 Error</Button>
-                <Button variant="contained" onClick={() => agent.TestErrors.get401Error().catch(error => console.log((error)))}>Test 401 Error</Button>
-                <Button variant="contained" onClick={() => agent.TestErrors.get404Error().catch(error => console.log((error)))}>Test 404 Error</Button>
-                <Button variant="contained" onClick={() => agent.TestErrors.get500Error().catch(error => console.log((error)))}>Test 500 Error</Button>
-                <Button variant="contained" onClick={getValidationError}>Test Validation Error</Button>
-            </ButtonGroup>
-            {validationErrors.length > 0 && 
-                <Alert severity="error">
-                    <AlertTitle>Validation Errors</AlertTitle>
-                    <List>
-                        {validationErrors.map(error => (
-                            <ListItem key={error}>
-                                <ListItemText>{error}</ListItemText>
-                            </ListItem> 
-                        ))}
-                    </List>
-                </Alert>
-            }
-        </Container>
-    )
-}
+export default AboutPage;
