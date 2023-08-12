@@ -21,18 +21,18 @@ function getAxiosParams(productParams: ProductParams) {
     params.append('pageNumber', productParams.pageNumber.toString());
     params.append('pageSize', productParams.pageSize.toString());
     params.append('orderBy', productParams.orderBy);
-    if(productParams.searchTerm) params.append('searchTerm', productParams.searchTerm);
-    if(productParams.brands.length > 0) params.append('brands', productParams.brands.toString());
-    if(productParams.types.length > 0) params.append('types', productParams.types.toString());
+    if (productParams.searchTerm) params.append('searchTerm', productParams.searchTerm);
+    if (productParams.brands.length > 0) params.append('brands', productParams.brands.toString());
+    if (productParams.types.length > 0) params.append('types', productParams.types.toString());
     return params;
 }
 
-export const fetchProductsAsync = createAsyncThunk<Product[], void, {state: RootState}>(
+export const fetchProductsAsync = createAsyncThunk<Product[], void, { state: RootState }>(
     'catalog/fetchProductsAsync',
     async (_, thunkAPI) => {
         const params = getAxiosParams(thunkAPI.getState().catalog.productParams);
         try {
-            const response =  await agent.Catalog.list(params);
+            const response = await agent.Catalog.list(params);
             thunkAPI.dispatch(setMetaData(response.metaData));
             return response.items;
         } catch (error: any) {
@@ -98,6 +98,14 @@ export const catalogSlice = createSlice({
         },
         resetProductParams: (state) => {
             state.productParams = initParams();
+        },
+        setProduct: (state, action) => {
+            productsAdapter.upsertOne(state, action.payload);
+            state.productsLoaded = false;
+        },
+        removeProduct: (state, action) => {
+            productsAdapter.removeOne(state, action.payload);
+            state.productsLoaded = false;
         }
     },
     extraReducers: (builder => {
@@ -143,4 +151,4 @@ export const catalogSlice = createSlice({
 
 export const productSelectors = productsAdapter.getSelectors((state: RootState) => state.catalog);
 
-export const { setProductParams, resetProductParams, setMetaData, setPageNumber } = catalogSlice.actions;
+export const { setProductParams, resetProductParams, setMetaData, setPageNumber, setProduct, removeProduct } = catalogSlice.actions;

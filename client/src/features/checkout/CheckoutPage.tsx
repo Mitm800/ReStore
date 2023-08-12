@@ -58,7 +58,7 @@ export default function CheckoutPage() {
 
     const methods = useForm({
         mode: 'all',
-        resolver: yupResolver(currentValidationSchema)
+        resolver: yupResolver<any>(currentValidationSchema)
     });
 
     useEffect(() => {
